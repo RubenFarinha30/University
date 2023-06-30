@@ -1,0 +1,1 @@
+este ficheiro é apenas para teste das funções GETFILE, PUTFILE e GETFILE
