@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <title>Portal de Vacinação - Gestão</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Portal de Vacinação - Alentejo</h1>
+    <nav>
+      <ul>
+        <li><a href="Index.html">Farmácias</a></li>
+        <li><a href="gestao.html">Gestão</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <div class="container">
+
+      <form id="add-program-form">
+        <h3>Adicionar Programa</h3>
+        <div id="program-form" class="form-group">
+          <div class="form-group">
+            <label for="farmacia-select">Farmácia:</label>
+            <select id="farmacia-select" name="farmacia" required></select>
+          </div>
+      
+          <div class="form-group">
+            <label for="vacina-select">Vacina:</label>
+            <select id="vacina-select" name="vacina" required>
+              <option value="gripe">Vacina da Gripe</option>
+              <option value="covid19">Vacina de COVID-19</option>
+            </select>
+          </div>
+      
+          <button type="submit">Adicionar Programa</button>
+          <button class="remove-program-button" type="button">Remover Programa</button>
+
+        </div>
+      </form>
+
+      <div>
+        <h3>Programa de Gripe</h3>
+        <ul id="gripe-list"></ul>
+      </div>
+  
+      <div>
+        <h3>Programa de COVID-19</h3>
+        <ul id="covid19-list"></ul>
+      </div>
+    </div>
+
+    <div id="farmacia-chart"></div>
+  </main>
+
+  <footer>
+    <div class="contacts">
+      <p>Contactos:</p>
+      <ul>
+        <li>Email: portaldevacinacaoalentejo@minsaude.pt</li>
+        <li>Telefone: +351 987 123 654</li>
+        <li>Endereço: Rua Odette Ferreira, 808, Alentejo, Portugal</li>
+      </ul>
+    </div>
+    <div class="link">
+      <a href="https://www.farmaciasportuguesas.pt/" target="_blank">
+        <img src="FarmPT.png" alt="Farmácias Portuguesas" width="50">
+      </a>
+    </div>
+    <div class="credits">
+      Desenvolvido por: Ruben Farinha, 48329
+    </div>
+  </footer>
+
+  <!-- Script para buscar dados e exibir listas -->
+  <script>
+    $(document).ready(async function () {
+        const gripeList = $('#gripe-list');
+        const covid19List = $('#covid19-list');
+
+        const fetchProgramList = async (url, listElement) => {
+            try {
+                const data = await $.getJSON(url);
+
+                if (data.status === 'ok') {
+                    data.farmacias.forEach(farmacia => {
+                        const listItem = $('<li>').text(`${farmacia.name} - ${farmacia.postal_code_locality}`);
+                        listElement.append(listItem);
+                    });
+                } else {
+                    console.error(`Erro na resposta da API: ${data.status}`);
+                }
+            } catch (error) {
+                console.error(`Erro ao buscar dados da API: ${url}`, error.message);
+            }
+        };
+
+        // Buscar e exibir a lista de programas de Gripe
+        await fetchProgramList('https://magno.di.uevora.pt/tweb/t1/program/gripe/list', gripeList);
+
+        // Buscar e exibir a lista de programas de COVID-19
+        await fetchProgramList('https://magno.di.uevora.pt/tweb/t1/program/covid19/list', covid19List);
+    });
+
+
+    //Obter lista para o SELECT de farmácia
+    $.getJSON('https://magno.di.uevora.pt/tweb/t1/farmacia/list')
+        .done(function (data) {
+            if (data.status === 'ok') {
+                const farmaciaSelect = $('#farmacia-select');
+
+                data.farmacias.forEach(farmacia => {
+                    const option = $('<option>')
+                        .attr('value', farmacia.entity_id)
+                        .text(`${farmacia.name} - ${farmacia.postal_code_locality}`);
+                    farmaciaSelect.append(option);
+                });
+            } else {
+                console.error(`Erro na resposta da API de farmácias: ${data.status}`);
+            }
+        })
+        .fail(function (error) {
+            console.error(`Erro ao buscar dados da API de farmácias: ${error.statusText}`);
+        });
+    
+
+
+        $(document).on('submit', '#add-program-form', function (event) {
+      
+          // Obtenha os valores do formulário
+          const farmaciaId = $('#farmacia-select').val();
+          const vacinaTipo = $('#vacina-select').val();
+      
+          const servicesField = vacinaTipo; 
+      
+          // Faça a solicitação POST para a API para adicionar um programa
+          $.post("https://magno.di.uevora.pt/tweb/t1/program/add", {
+              entity_id: farmaciaId,
+              services: servicesField
+          })
+          .done(function(data) {
+              alert('Programa adicionado com sucesso!');
+          })
+          .fail(function(error) {
+              console.error('Erro ao adicionar programa:', error.responseText);
+              alert('Erro ao adicionar programa. Por favor, tente novamente.');
+          });
+      });
+      
+      $(document).on('click', '.remove-program-button', function (event) {
+        event.preventDefault(); 
+    
+        // Obtenha os valores necessários para a remoção
+        const farmaciaId = $('#farmacia-select').val();
+        const vacinaTipo = $('#vacina-select').val();
+    
+        const servicesField = vacinaTipo;
+    
+        // Faça a solicitação POST para a API para remover um programa
+        $.post("https://magno.di.uevora.pt/tweb/t1/program/remove", {
+            entity_id: farmaciaId,
+            services: servicesField
+        })
+        .done(function(data) {
+            alert('Programa removido com sucesso!');
+        })
+        .fail(function(error) {
+            alert('Erro ao remover programa. Por favor, tente novamente.');
+        });
+    });
+    
+      
+    //Gráfico
+    $.getJSON('https://magno.di.uevora.pt/tweb/t1/farmacia/list')
+        .done(function (data) {
+            if (data.status === "ok") {
+                const farmacias = data.farmacias;
+                const localidades = {};
+
+                farmacias.forEach(farmacia => {
+                    const localidade = farmacia.postal_code_locality;
+                    localidades[localidade] = (localidades[localidade] || 0) + 1;
+                });
+
+                const localidadesOrdenadas = Object.entries(localidades)
+                    .sort((a, b) => b[1] - a[1])
+                    .slice(0, 5);
+
+                const localidadesArray = localidadesOrdenadas.map(entry => entry[0]);
+                const contagemArray = localidadesOrdenadas.map(entry => entry[1]);
+
+                const trace = {
+                    x: localidadesArray,
+                    y: contagemArray,
+                    type: 'bar',
+                    text: contagemArray.map(String),
+                    textposition: 'auto',
+                    hoverinfo: 'none',
+                };
+
+                const layout = {
+                    title: 'Número de Farmácias por Localidade (Top 5)',
+                    xaxis: {
+                        title: 'Localidade',
+                    },
+                    yaxis: {
+                        title: 'Número de Farmácias',
+                    },
+                };
+
+                Plotly.newPlot('farmacia-chart', [trace], layout);
+            } else {
+                console.error("Erro na resposta da API.");
+            }
+        })
+        .fail(function (error) {
+            console.error("Erro na requisição:", error);
+        });
+</script>
+
+</body>
+</html>

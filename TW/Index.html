@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html >
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <title>Portal de Vacinação - Alentejo</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <header>
+        <h1>Portal de Vacinação - Alentejo</h1>
+        <nav>
+            <ul>
+                <li><a href="Index.html">Farmácias</a></li>
+                <li><a href="gestao.html">Gestão</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+
+        <div class="farmacias-container">
+            <div class="search-form">
+                <h2>Pesquisa por Nome ou Localidade</h2>
+                <input type="text" id="search-input" placeholder="Digite o nome ou localidade">
+                <button id="search-locally">Pesquisar</button>
+            </div>   
+            <div class="search-form">
+                <h2>Pesquisa por Tipo de Vacina</h2>
+                <select id="vaccine-type">
+                    <option value="gripe">Vacina da Gripe</option>
+                    <option value="covid-19">Vacina de COVID-19</option>
+                </select>
+                <button id="search-for-vaccine">Pesquisar</button>
+            </div>
+            <h2>Farmácias Aderentes:</h2>
+            <hr>
+            <ul id="pharmacy-list"></ul>
+            
+            <div class="pagination">
+                <button id="prev-page">Anterior</button>
+                <button id="next-page">Próxima</button>
+            </div>
+        </div>    
+
+        <div class="user-schedule-container">
+            <form class="user-schedule-form" id="user-schedule-form">
+                <label for="user-id-schedule">Nº Utente:</label>
+                <input type="text" id="user-id-schedule" name="user_id_schedule" required>
+                <button type="submit">Mostrar Agendamentos</button>
+            </form>
+        </div>
+
+
+        <div id="pharmacy-details-container" class="pharmacy-details-container">
+            <div id="schedule-form-container" class="schedule-form-container"></div>
+        </div>
+
+</div>
+
+    </main>
+
+    <footer>
+        <div class="contacts">  
+                <p>Contactos:</p>
+            <ul>
+                <li>Email: portaldevacinacaoalentejo@minsaude.pt</li>
+                <li>Telefone: +351 987 123 654</li>
+                <li>Endereço: Rua Odette Ferreira, 808, Alentejo, Portugal</li>
+            </ul>
+        </div>
+        <div class="link">
+            <a href="https://www.farmaciasportuguesas.pt/" target="_blank">
+               <img src="FarmPT.png" alt="Farmácias Portuguesas" width="50"> 
+            </a>
+        </div>
+        <div class="credits">
+            Desenvolvido por: Ruben Farinha, 48329
+        </div>
+    </footer>
+    <script>
+        $(document).ready(async function () {
+            const pharmacyList = $('#pharmacy-list');
+            const prevPageButton = $('#prev-page');
+            const nextPageButton = $('#next-page');
+            const pharmacyDetailsContainer = $('#pharmacy-details-container');
+    
+            let currentPage = 0;
+            const pharmaciesPerPage = 5;
+            let currentEntityID;
+            let pharmacyData = [];
+            let totalPages = 0;
+    
+            const getPharmacyList = async () => {
+                try {
+                    const data = await $.getJSON('https://magno.di.uevora.pt/tweb/t1/farmacia/list');
+    
+                    for (const pharmacy of data.farmacias) {
+                        const details = await getPharmacyDetails(pharmacy.entity_id);
+                        pharmacyData.push({ ...pharmacy, details });
+                    }
+    
+                    totalPages = Math.ceil(pharmacyData.length / pharmaciesPerPage);
+    
+                    showPage(currentPage);
+                } catch (error) {
+                    console.error('Erro ao buscar detalhes das farmácias:', error.message);
+                }
+            };
+
+            const getPharmacyDetails = async (pharmacyId) => {
+                try {
+                    const details = await $.getJSON(`https://magno.di.uevora.pt/tweb/t1/farmacia/get/${pharmacyId}`);
+                    return details;
+                } catch (error) {
+                    console.error('Erro ao buscar detalhes da farmácia:', error.message);
+                    return null;
+                }
+            };
+    
+            const showPage = (page) => {
+                const start = page * pharmaciesPerPage;
+                const end = start + pharmaciesPerPage;
+                const pharmaciesToShow = pharmacyData.slice(start, end);
+    
+                pharmacyList.empty();
+    
+                pharmaciesToShow.forEach((pharmacy, index) => {
+                    const listItem = $('<li>')
+                        .text(`${pharmacy.name} - ${pharmacy.postal_code_locality}`)
+                        .attr('data-entity-id', pharmacy.entity_id)
+                        .on('click', handlePharmacyClick);
+                    pharmacyList.append(listItem);
+                });
+    
+                currentPage = page;
+                prevPageButton.prop('disabled', currentPage === 0);
+                nextPageButton.prop('disabled', currentPage === totalPages - 1);
+            };
+    
+            prevPageButton.on('click', () => {
+                if (currentPage > 0) {
+                    showPage(currentPage - 1);
+                }
+            });
+    
+            nextPageButton.on('click', () => {
+                if (currentPage < totalPages - 1) {
+                    showPage(currentPage + 1);
+                }
+            });
+    
+            const handlePharmacyClick = async (event) => {
+                const pharmacyElement = $(event.currentTarget);
+                const entity_id = pharmacyElement.data('entity-id');
+                currentEntityID = entity_id;
+                try {
+                    const details = await $.getJSON(`https://magno.di.uevora.pt/tweb/t1/farmacia/get/${entity_id}`);
+                    displayPharmacyDetails(details.farmacia);
+                } catch (error) {
+                    console.error('Error fetching pharmacy details:', error.message);
+                }
+            };
+            
+    
+            const displayPharmacyDetails = async (pharmacy) => {
+                pharmacyDetailsContainer.empty();
+                const h3 = $('<h3>').text(`Detalhes: ${pharmacy.name}`);
+                pharmacyDetailsContainer.append(h3);
+    
+                const detailsList = $('<ul>');
+    
+                const details = pharmacy;
+    
+                const formattedDetails = {
+                    'Nome': pharmacy.name,
+                    'Email': details?.email || 'N/A',
+                    'Coordenadas': `${details?.longitude || 'N/A'}, ${details?.latitude || 'N/A'}`,
+                    'Diretor': details?.director || 'N/A',
+                    'Morada': details?.street_name || 'N/A',
+                    'Localidade': `${details?.postal_code_locality || 'N/A'}, ${details?.postal_code_region || 'N/A'}`,
+                    'Código Postal': `${details?.postal_code_zone || 'N/A'} - ${details?.postal_code_sufix || 'N/A'}`,
+                    'Serviços': details?.services || 'N/A',
+                    'Telefone': details?.telephone || 'N/A'
+                };
+    
+                for (const [key, value] of Object.entries(formattedDetails)) {
+                    const listItem = $('<li>').text(`${key}: ${value}`);
+                    detailsList.append(listItem);
+                }    
+                pharmacyDetailsContainer.append(detailsList);
+
+                const scheduleForm = $('<form>').attr('id', 'schedule-form');
+                    scheduleForm.append($('<label>').text('Nº Utente:').attr('for', 'user-id'));
+                    scheduleForm.append($('<input>').attr({ type: 'text', id: 'user-id', name: 'user_id', required: true }));
+                    scheduleForm.append($('<label>').text('Tipo de Vacina:').attr('for', 'vaccine-type-select'));
+                    scheduleForm.append($('<select>').attr({ id: 'vaccine-type-select', name: 'vaccine_type', required: true })
+                        .append($('<option>').attr('value', 'gripe').text('Vacina da Gripe'))
+                        .append($('<option>').attr('value', 'covid-19').text('Vacina de COVID-19'))
+                    );
+                    scheduleForm.append($('<label>').text('Data de Agendamento:').attr('for', 'schedule-date'));
+                    scheduleForm.append($('<input>').attr({ type: 'date', id: 'schedule-date', name: 'schedule_date', required: true }));
+                    scheduleForm.append($('<button>').attr('type', 'submit').text('Agendar'));
+                
+                    pharmacyDetailsContainer.append(scheduleForm);
+            };
+            await getPharmacyList();
+
+
+
+        // Evento de clique no botão de pesquisa por nome/localidade
+        $('#search-locally').on('click', function () {
+            const searchTerm = $('#search-input').val();
+            if (searchTerm.trim() !== '') {
+                searchLocally(searchTerm);
+            }
+        });
+
+        // Função de pesquisa por nome ou localidade
+        const searchLocally = (searchTerm) => {
+            const filteredPharmacies = pharmacyData.filter((pharmacy) => {
+                return (
+                    pharmacy.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    pharmacy.postal_code_locality.toLowerCase().includes(searchTerm.toLowerCase())
+                );
+            });
+            showFilteredPharmacies(filteredPharmacies);
+        };
+
+        // Função para exibir farmácias na interface
+        const showFilteredPharmacies = (filteredPharmacies) => {
+            const pharmacyList = $('#pharmacy-list');
+            pharmacyList.empty();
+
+            filteredPharmacies.forEach((pharmacy, index) => {
+                const listItem = $('<li>')
+                    .text(`${pharmacy.name} - ${pharmacy.postal_code_locality}`)
+                    .attr('data-entity-id', pharmacy.entity_id)
+                    .on('click', handlePharmacyClick);
+                pharmacyList.append(listItem);
+            });
+        };
+
+
+        // Evento de clique no botão de pesquisa por vacina
+        $('#search-for-vaccine').on('click', function () {
+            const vaccineType = $('#vaccine-type').val();
+            searchForVaccine(vaccineType);
+        });
+
+
+        // Função para realizar pesquisa no servidor para vacina
+        const searchForVaccine = (vaccineType) => {
+            const postData = {
+                vaccine: vaccineType
+            };
+
+            $.ajax({
+                url: 'https://magno.di.uevora.pt/tweb/t1/farmacia/searchvaccine',
+                type: 'POST',
+                data: postData,
+                dataType: 'json',
+                success: function (data) {
+                    console.log('Resposta da API:', data);
+
+                    updatePharmacyList(data);
+                },
+                error: function (error) {
+                    console.error('Erro na requisição:', error);
+                }
+            });
+        };
+
+        // Função para atualizar a lista de farmácias na interface
+        const updatePharmacyList = (response) => {
+            const pharmacyList = $('#pharmacy-list');
+
+            if (response.status === 'ok' && Array.isArray(response.farmacias)) {
+                const farmacias = response.farmacias;
+                pharmacyList.empty();
+
+                farmacias.forEach((pharmacy, index) => {
+                    const listItem = $('<li>')
+                        .text(`${pharmacy.name} - ${pharmacy.postal_code_locality}`)
+                        .attr('data-entity-id', pharmacy.entity_id)
+                        .on('click', handlePharmacyClick);
+                    pharmacyList.append(listItem);
+                    });
+            } else {
+                    console.error('Resposta da API em formato inesperado:', response);
+                }
+            };
+        
+        //Obter schedule pelo user_id
+        $(document).on('submit', '#user-schedule-form', function (event) {
+            event.preventDefault(); 
+            const userIdSchedule = $('#user-id-schedule').val();
+
+            $.post("https://magno.di.uevora.pt/tweb/t1/schedule/list", {
+                user_id: userIdSchedule
+            })
+            .done(function(data) {
+                console.log(data);
+                displayUserSchedule(data);
+            })
+            .fail(function(error) {
+                console.error('Erro ao obter agendamentos:', error.responseText);
+            });
+        });
+
+        $(document).on('submit', '#schedule-form', function (event) {
+            event.preventDefault(); // Prevent the default form submission
+    
+            // Get values from the form
+            const userId = $('#user-id').val();
+            const vaccineType = $('#vaccine-type-select').val();
+            const scheduleDate = $('#schedule-date').val();
+                $.post("https://magno.di.uevora.pt/tweb/t1/schedule/add", {
+                    user_id: userId,
+                    vaccine: vaccineType,
+                    entity_id: currentEntityID,
+                    schedule_date: scheduleDate,
+                })
+                .done(function(data) {
+                    // Check if the response status is "ok"
+                    if (data.status === 'ok') {
+                        // Display an alert with the schedule information
+                        const alertMessage = `Schedule Code: ${data.schedule_code}\nMessage: ${data.schedule_msg}`;
+                        alert(alertMessage);
+                    } else {
+                        // Display an alert with an error message
+                        alert(`Error: ${data.status}`);
+                    }
+                })
+                .fail(function(error) {
+                    // Handle the error
+                    console.error('Error adding schedule:', error.responseText);
+                });
+        });
+
+        const displayUserSchedule = (data) => {
+        const detailsContainer = $('#pharmacy-details-container');
+        const scheduleList = $('<ul>').addClass('schedule-list');
+        detailsContainer.empty();
+
+            // Criar uma lista para exibir os agendamentos
+            if (data.hasOwnProperty('schedule_list') && Array.isArray(data.schedule_list) && data.schedule_list.length > 0) {
+                const scheduleList = $('<ul>').addClass('schedule-list');
+        
+                data.schedule_list.forEach((scheduleData) => {
+                    if (Array.isArray(scheduleData) && scheduleData.length === 5) {
+                        // Criar um item da lista para cada agendamento
+                        const listItem = $('<li>').text(`Nº Utente: ${scheduleData[0]}, Farmácia nº: ${scheduleData[1]}, Vacina: ${scheduleData[2]}, Data: ${scheduleData[3]}, Código: ${scheduleData[4]}`);
+        
+                        // Adicionar um botão "-" a cada item da lista com uma classe
+                        const deleteButton = $('<button>').text('-').addClass('delete-button');
+                        deleteButton.on('click', function () {
+                            // Obter o userID e schedule_code associados a este botão
+                            const userId = $('#user-id-schedule').val();
+                            const scheduleCode = scheduleData[4];
+        
+                            console.log('Excluir agendamento com userID:', userId, 'e schedule_code:', scheduleCode);
+        
+                            // Fazer a solicitação POST para a API para remover o agendamento
+                            $.post("https://magno.di.uevora.pt/tweb/t1/schedule/remove", {
+                                user_id: userId,
+                                schedule_code: scheduleCode
+                            })
+                            .done(function(response) {
+                                alert('Agendamento removido com sucesso');
+                                // Remover o item da lista após a remoção bem-sucedida
+                                listItem.remove();
+                            })
+                            .fail(function(error) {
+                                alert('Erro ao remover agendamento');
+                            });
+                        });
+        
+                        listItem.append(deleteButton);
+                        scheduleList.append(listItem);
+                    } else {
+                        console.error('Agendamento em formato inesperado:', scheduleData);
+                    }
+                });
+                detailsContainer.append(scheduleList);
+            } else {
+                console.error('Resposta da API em formato inesperado:', data);
+            }
+        };
+    });
+
+    </script>
+</body>
+</html>

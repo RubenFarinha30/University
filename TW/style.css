@@ -1,0 +1,360 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+}
+
+/* Estilos para o header */
+header {
+    background: linear-gradient(135deg, #070b75, #000000); /* Cor de fundo */
+    color: #FFF; /* Cor do texto */
+    padding: 20px; /* Espaçamento interno */
+    display: flex; /* Usar flexbox para posicionar elementos no cabeçalho */
+    justify-content: space-between; /* Alinhar elementos no espaço disponível */
+    align-items: center; /* Alinhar verticalmente os elementos ao centro */
+    flex-wrap: wrap; /* Lidar com quebras de linha se necessário */
+}
+
+header h1 {
+    font-size: 25px; /* Tamanho da fonte do título */
+    margin-right: 20px;
+}
+
+nav {
+    margin-top: 10px;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+nav a {
+    color: #c0bebe; /* Cor dos links no cabeçalho */
+    text-decoration: none;
+}
+
+/* Estilos para os links de navegação no cabeçalho */
+nav a:hover {
+    text-decoration: underline; /* Sublinhar os links ao passar o mouse */
+}
+
+main {
+    background-image: url('background.jpg'); /* Caminho para a imagem de fundo */
+    background-size: cover; /* Ajusta o tamanho da imagem para cobrir o elemento */
+    background-position: center; /* Centraliza a imagem no elemento */
+    background-repeat: no-repeat; /* Evita a repetição da imagem de fundo */
+    color: #000; /* Cor do texto na seção principal */
+    padding: 50px;
+    display: flex;
+    flex-wrap: wrap; /* Permite a quebra de linha para as listas quando não houver espaço suficiente */
+    justify-content: space-around; /* Distribui o espaço disponível entre as listas */
+}
+
+.farmacias-container,
+.pharmacy-details-container {
+    background: #fff;
+    padding: 20px;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    border-left: 5px solid #0078d4;
+    margin: 0px 0 0 0px; /* Updated margin for top and left */
+    width: 400px;
+    border-radius: 5px;
+    text-align: left;
+}
+
+.search-form {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 15px;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+#search-input,
+#vaccine-type {
+    padding: 8px;
+    width: 60%;
+    margin-right: 8px;
+    box-sizing: border-box;
+}
+
+button {
+    padding: 8px 16px;
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+/* Estilos para o título "Farmácias Aderentes" */
+.farmacias-container h2 {
+    font-size: 20px; /* Tamanho da fonte do título */
+    color: #0078d4; /* Cor do título */
+    margin-bottom: 10px; /* Espaçamento inferior do título */
+}
+
+.farmacias-container hr {
+    border: none; /* Remove a borda padrão */
+    border-top: 2px solid #0078d4; /* Cor e espessura do traço */
+    margin: 10px 0; /* Margem superior e inferior para separação */
+}
+
+.farmacias-container ul li {
+    background-color: #f2f2f2; /* Cor de fundo das opções da lista */
+    padding: 5px; /* Espaçamento interno das opções da lista */
+    margin: 5px 0; /* Margem superior e inferior das opções da lista */
+    border: 1px solid #ccc; /* Borda ao redor das opções */
+    border-radius: 5px; /* Bordas arredondadas */
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Sombra */
+    cursor: pointer; /* Transforma o cursor em uma mão ao passar o mouse */
+}
+
+.farmacias-container ul li:hover {
+    background-color: #ddd; /* Cor de fundo ao passar o mouse nas opções da lista */
+}
+
+/* Estilos para os botões de paginação */
+.pagination {
+    text-align: center;
+}
+
+.pagination button {
+    background-color: #0078d4; /* Cor de fundo dos botões de página */
+    color: #fff; /* Cor do texto nos botões de página */
+    padding: 5px 10px; /* Espaçamento interno dos botões */
+    border: none; /* Remova a borda dos botões */
+    cursor: pointer; /* Transforme o cursor em uma mão ao passar o mouse */
+    margin: 5px; /* Espaçamento entre os botões de página */
+    border-radius: 5px; /* Adicione bordas arredondadas aos botões */
+}
+
+.pagination button:hover {
+    background-color: #00599b; /* Cor de fundo ao passar o mouse */
+}
+
+/* Estilos para os botões de página "Anterior" e "Próxima" */
+#prev-page {
+    margin-right: 5px; /* Espaçamento à direita do botão "Anterior" */
+}
+
+#next-page {
+    margin-left: 5px; /* Espaçamento à esquerda do botão "Próxima" */
+}
+
+.pharmacy-details-container h3 {
+    font-size: 20px; /* Tamanho da fonte do título */
+    color: #0078d4; /* Cor do título */
+    margin-bottom: 10px; /* Espaçamento inferior do título */
+    background-color: #ffffff;
+    border-bottom: 2px solid #0078d4;
+}
+
+#schedule-form {
+    max-width: 400px;
+    margin: 20px auto;
+}
+
+#schedule-form label {
+    display: block;
+    margin-bottom: 8px;
+}
+
+#schedule-form input,
+#schedule-form select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 16px;
+    box-sizing: border-box;
+}
+
+#schedule-form button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#schedule-form button:hover {
+    background-color: #45a049;
+}
+
+/* Adicione este trecho ao seu CSS ou em linha no cabeçalho HTML */
+.user-schedule-container {
+    background-color: #f4f4f4;
+    padding: 10px;
+    border-radius: 8px;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.user-schedule-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#user-id-schedule {
+    width: 120px;
+    padding: 8px;
+    margin-bottom: 5px;
+}
+
+#user-schedule-form button {
+    padding: 8px 12px;
+    font-size: 14px;
+    cursor: pointer;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+}
+
+#user-schedule-form button:hover {
+    background-color: #45a049;
+}
+
+.schedule-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.schedule-list li {
+    border: 1px solid #ddd;
+    margin: 5px 0;
+    padding: 10px;
+}
+
+.delete-button {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 4px 8px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+#add-program-form button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* Aumento de especificidade para priorizar essa regra */
+#add-program-form .remove-program-button {
+    background-color: #f44336;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* Estilo de hover para ambos os botões */
+.remove-program-button:hover,
+.add-program-form:hover {
+    margin-bottom: 20px;
+    opacity: 0.8; /* Reduz a opacidade ao passar o mouse sobre o botão */
+}
+
+#program-form {
+    display: flex;
+    flex-direction: column;
+    max-width: 330px; /* Defina a largura máxima do formulário conforme necessário */
+    margin: 0 auto; /* Centraliza o formulário na página */
+}
+
+.form-group {
+    margin-bottom: 15px; /* Adiciona algum espaçamento entre os grupos de formulários */
+}
+
+/* Adicione esta regra ao seu arquivo CSS */
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    background-color: rgb(184, 184, 209); /* Adicione a cor de fundo desejada aqui */
+    padding: 20px;
+}
+
+/* Estilos para o rodapé */
+footer {
+    background: linear-gradient(to top, #003366, #336699); /* Gradiente inverso no rodapé */
+    color: #fff; /* Cor do texto no rodapé */
+    padding: 20px; /* Espaçamento interno no rodapé */
+    display: flex; /* Usar flexbox para posicionar elementos no rodapé */
+    justify-content: space-between; /* Alinhar elementos no espaço disponível */
+    align-items: flex-start; /* Alinhar verticalmente os elementos no topo */
+    flex-wrap: wrap; /* Lidar com quebras de linha se necessário */
+}
+
+.contacts {
+    margin-right: auto; /* Alinhar à esquerda */
+    flex: 1; /* Expandir para ocupar espaço disponível */
+    margin-bottom: 20px; /* Espaçamento inferior */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Sombra para o texto */
+}
+
+.link {
+    text-align: center; /* Centralize o link no rodapé */
+    flex: 1; /* Expandir para ocupar espaço disponível */
+}
+
+.link img {
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Sombra para a imagem */
+}
+
+.credits {
+    text-align: right; /* Alinhar à direita */
+    margin-top: 20px; /* Espaçamento superior */
+    flex: 1; /* Expandir para ocupar espaço disponível */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Sombra para o texto */
+}
+
+/* Adicione seu estilo aqui conforme necessário */
+
+#gripe-list,
+#covid19-list {
+    flex: 1; /* Faz com que as listas ocupem o espaço disponível de maneira igual */
+    margin-top: 15px;
+    padding: 15px;
+    box-sizing: border-box;
+}
+
+#gripe-list li,
+#covid19-list li {
+    margin-bottom: 10px;
+    background-color: #f2f2f2;
+    padding: 6px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+h3 {
+    color: rgb(0, 0, 24);
+    padding: 4px;
+    background-color: #0078d4;
+    border-radius: 5px;
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+}
+
+#farmacia-chart {
+    width: 50%;
+    margin: auto;
+}
