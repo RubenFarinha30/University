@@ -1,0 +1,113 @@
+\documentclass[runningheads]{llncs}
+
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+
+\begin{document}
+%
+\title{Desenvolvimento de Aplicações Móveis com a Plataforma React Native}
+%
+%\titlerunning{Abbreviated paper title}
+% If the paper title is too long for the running head, you can set
+% an abbreviated paper title here
+%
+\author{48329 Ruben Farinha e 48738 Gonçalo Veríssimo}
+%
+\authorrunning{Ruben e Gonçalo}
+% First names are abbreviated in the running head.
+% If there are more than two authors, 'et al.' is used.
+%
+\institute{CLAV, Universidade de Évora, Portugal
+\\
+\url{https://uevora.pt} \\
+Engenharia Informática \\
+2023/24}
+%
+\maketitle              % typeset the header of the contribution
+%
+\begin{abstract}
+As aplicações móveis fazem cada vez mais parte do nosso dia a dia e as plataformas evoluem constantemente para se adaptar às necessidades dos utilizadores, o desenvolvimento de apps tem crescido exponencialmente nos últimos anos. Com este crescimento, surgem novas metodologias e ferramentas para otimizar o processo de criação de apps. Frameworks como o React Native são extremamente úteis para este propósito, pois oferecem ferramentas que simplificam e agilizam o desenvolvimento.
+
+\keywords{Aplicação Móvel  \and React Native \and Framework.}
+\end{abstract}
+%
+%
+%
+\section{Introdução}
+O desenvolvimento de aplicações móveis é um mercado em constante crescimento, com a necessidade de criar apps para diferentes plataformas (Android e iOS), surgiram as \textbf{frameworks multiplataforma}. Neste short paper vamos abordar como a plataforma \textbf{React Native} facilita este processo de desenvolvimento de aplicações móveis eficientes e escaláveis, acabando por discutir também vantagens e desvantagens da sua utilização, comparação a outras alternativas e exemplos desenvolvidos utilizando esta plataforma.
+React Native é uma poderosa ferramenta que \textbf{revolucionou} a maneira como os desenvolvedores criam experiências de aplicações móveis. Criado e mantido pelo Facebook, React Native foi lançado pela primeira vez em 2015 e desde então tem sido amplamente adotado pela comunidade. Foi concebido pela necessidade de simplificar e acelerar o processo de desenvolvimento de aplicações móveis, mantendo a capacidade de criar experiências de utilizador ricas e de alta qualidade. Antes da sua introdução, os desenvolvedores enfrentavam o desafio de criar aplicações nativas para cada plataforma (iOS e Android), o que consumia tempo e recursos consideráveis.
+
+\vspace{10mm}
+
+
+\section{Funcionamento}
+O React Native é uma estrutura de \textbf{desenvolvimento de aplicações móveis multiplataforma} que utiliza JavaScript como linguagem de programação principal. Ao contrário de outras frameworks, o React Native compila o código JavaScript em código nativo da plataforma (iOS ou Android) através de um processo chamado \textbf{"compilação ahead-of-time" (AOT)}.
+
+\vspace{3mm}
+
+O funcionamento do React Native pode ser resumido da seguinte forma:
+
+
+\paragraph{\textbf{Código JavaScript:}} Os desenvolvedores escrevem o código da aplicação em JavaScript, ou em uma linguagem que é traduzida para JavaScript, como TypeScript.
+\paragraph{\textbf{Bridge de Comunicação:}} O React Native utiliza um "bridge" de comunicação que permite a interação entre o código JavaScript e os componentes nativos do dispositivo. Este bridge é responsável por traduzir as chamadas de função e os eventos entre o código JavaScript e o código nativo.
+\paragraph{\textbf{Componentes Nativos Reutilizáveis:}} É fornecida uma biblioteca de componentes nativos reutilizáveis, escritos em Objective-C para iOS e Java para Android. Estes componentes encapsulam a funcionalidade nativa, como botões, listas e barras de navegação, e são renderizados diretamente nos elementos da interface do utilizador da plataforma.
+\paragraph{\textbf{Renderização Dinâmica:}} O React Native utiliza um mecanismo de renderização dinâmica que permite atualizar a interface do utilizador de forma eficiente em resposta a eventos e mudanças de estado. Isso é alcançado através de uma reconciliação virtual do DOM (Document Object Model) em JavaScript e da atualização correspondente dos componentes nativos na interface do utilizador.
+\paragraph{\textbf{Empacotamento, Compilação e Otimização:}}
+ O código JavaScript e os recursos da aplicação são empacotados num arquivo de bundle que é carregado e executado no dispositivo. Durante o processo de compilação, o código JavaScript é pré-compilado e otimizado para melhorar o desempenho e a eficiência da aplicação.
+
+ \vspace{3mm}
+
+Em resumo, o React Native permite que os desenvolvedores criem \textbf{aplicações móveis multiplataforma} utilizando JavaScript e componentes nativos reutilizáveis. É usado um \textbf{bridge de comunicação} para interagir com os recursos nativos do dispositivo e um mecanismo de \textbf{renderização dinâmica} para atualizar a interface do utilizador de forma eficiente. Ao empregar uma abordagem de compilação ahead-of-time, o React Native oferece um desempenho e uma experiência de utilizador comparáveis às aplicações desenvolvidas nativamente, ao mesmo tempo que permite a partilha de código entre plataformas.
+
+\section{Vantagens e Desvantagens face à competição}
+O React Native emerge como a escolha preferida entre as frameworks de desenvolvimento de aplicações móveis, conforme um estudo realizado pelo Politécnico de Coimbra. Este estudo, conduzido através de diversos testes com programadores de diferentes níveis de conhecimento, revelou várias vantagens distintas desta plataforma.
+
+\vspace{3mm}
+
+Um dos pontos-chave destacados foi a \textbf{intuitividade} e \textbf{facilidade} do uso do React Native. A sua abordagem baseada em componentes simplifica o desenvolvimento, tornando-o acessível para programadores menos experientes. Além disso, a estrutura modular da framework, centrada em componentes reutilizáveis, contribui para uma arquitetura de código limpa e de fácil manutenção.
+Outra vantagem significativa é a \textbf{manipulação eficiente de listas}, facilitada pela estrutura do React Native que permite a manipulação de arrays. Isso simplifica a exibição e a gestão de dados, tornando o desenvolvimento de interfaces dinâmicas mais ágil e intuitivo.
+
+\vspace{3mm}
+
+O React Native também se destaca pelo \textbf{sólido suporte para networking}, permitindo a integração de solicitações HTTP de forma direta e eficaz. Isso simplifica a comunicação com servidores e serviços externos, tornando o desenvolvimento de aplicações conectadas à internet mais fluído e eficiente.
+
+\vspace{3mm}
+
+No entanto, apesar das suas vantagens, o React Native não está isento de desafios. Os desenvolvedores podem enfrentar dificuldades ao controlar o código para garantir uma experiência consistente em diferentes plataformas móveis. A personalização da aparência e do comportamento da aplicação para atender às diretrizes específicas de cada plataforma também pode ser um obstáculo, especialmente para iniciantes.
+
+\vspace{3mm}
+
+Além disso, a \textbf{dependência de bibliotecas de terceiros} pode aumentar a complexidade do projeto e introduzir potenciais \textbf{problemas de compatibilidade}. Embora o React Native seja acessível para programadores com conhecimento prévio de JavaScript, pode haver uma curva de aprendizagem inicial para entender os conceitos específicos e as melhores práticas de desenvolvimento associadas a esta framework.
+
+\vspace{30mm}
+
+%
+% ---- Bibliography ----
+%
+% BibTeX users should specify bibliography style 'splncs04'.
+% References will then be sorted and formatted in the correct style.
+%
+% \bibliographystyle{splncs04}
+% \bibliography{mybibliography}
+%
+\begin{thebibliography}{8}
+\bibitem{ref_article1}
+Fernando Fortunato de Lima. Avaliação de frameworks para o desenvolvimento de
+aplicações híbridas.\textit{Trabalho de Curso} (2019)
+
+\bibitem{ref_book1}
+Hugo Brito, Anabela Gomes, Alvaro Santos, and Jorge Bernardino. Javascript in mobile applications: React native vs ionic vs nativescript vs native development.
+\textit{In 2018 13th Iberian conference on information systems and technologies (CISTI),}
+(pages 1–6. IEEE, 2018)
+
+\bibitem{ref_url1}
+Documentação oficial React Native, \url{https://reactnative.dev/docs/getting-started}, last accessed 2023/03/23
+
+\bibitem{ref_url1}
+Native Modules Intro, \url{https://reactnative.dev/docs/native-modules-intro}, last accessed 2023/03/23
+
+\bibitem{ref_url1}
+Top 10 Reasons to use Platform Native APIs, \url{https://blogs.remobjects.com/2013/03/14/top-10-reasons-to-use-platform-native-apis/}, last accessed 2023/03/23
+
+\end{thebibliography}
+\end{document}
